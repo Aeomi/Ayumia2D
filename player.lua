@@ -14,7 +14,7 @@ function PlyLoad( ) -- Load the player up when the game starts
 		Height = false;
 		Friction = 3.5;
 		HP = 100;
-		Speed = 10
+		Speed = 25
 	}
 
 		
@@ -58,6 +58,7 @@ end
 
 function PlyMovement( Rate )
 	local Sprint
+	local MaxSpeed
 	Ply.X = Ply.X + Ply.XVel
 	Ply.Y = Ply.Y + Ply.YVel
 	Ply.XVel = Ply.XVel * ( 1 - math.min( Rate * Ply.Friction, 1 ) )
@@ -65,27 +66,29 @@ function PlyMovement( Rate )
 	
 	if love.keyboard.isDown( "lshift" ) then
 		Sprint = ( Ply.Speed / 1.5 )
+		MaxSpeed = 4
 	else
 		Sprint = 0
+		MaxSpeed = 2
 	end
 
 	if love.keyboard.isDown( "d" ) then
 		Ply.AvImg = CharRight
-		if Ply.XVel < 100 then Ply.XVel = Ply.XVel + ( Ply.Speed + Sprint ) * Rate end
+		if Ply.XVel < MaxSpeed then Ply.XVel = Ply.XVel + ( Ply.Speed + Sprint ) * Rate end
 	end
 	if love.keyboard.isDown( "a" ) then
 		Ply.AvImg = CharLeft
-		if Ply.XVel > -100 then Ply.XVel = Ply.XVel - ( Ply.Speed + Sprint ) * Rate end
+		if Ply.XVel > -MaxSpeed then Ply.XVel = Ply.XVel - ( Ply.Speed + Sprint ) * Rate end
 	end
 	
 	
 	if love.keyboard.isDown( "s" ) then
 		Ply.AvImg = CharDown
-		if Ply.YVel < 100 then Ply.YVel = Ply.YVel + ( Ply.Speed + Sprint ) * Rate end
+		if Ply.YVel < MaxSpeed then Ply.YVel = Ply.YVel + ( Ply.Speed + Sprint ) * Rate end
 	end
 	if love.keyboard.isDown( "w" ) then
 		Ply.AvImg = CharUp
-		if Ply.YVel > -100 then Ply.YVel = Ply.YVel - ( Ply.Speed + Sprint ) * Rate end
+		if Ply.YVel > -MaxSpeed then Ply.YVel = Ply.YVel - ( Ply.Speed + Sprint ) * Rate end
 	end
 
 	

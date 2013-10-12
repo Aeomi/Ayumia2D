@@ -23,7 +23,7 @@ end
 
 
 function love.update( dt )
-	Rate = ( dt * 10 )
+	Rate = dt
 	MouseX = love.mouse.getX( )
 	MouseY = love.mouse.getY( )
 	
