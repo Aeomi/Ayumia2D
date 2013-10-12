@@ -1,5 +1,5 @@
 
-local Ver = "0r01a"
+local Ver = "0r01.6a"
 ScrHeight = 720
 ScrWidth = 1024
 
