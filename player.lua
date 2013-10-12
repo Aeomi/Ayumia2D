@@ -3,7 +3,19 @@
 function PlyLoad( ) -- Load the player up when the game starts
 
 	-- Tables & Arrays --
-	Ply = { AvImg = nil, World = nil, X = 10, Y = 10, HP = 100, Speed = 1 }
+	Ply = { 
+		AvImg = false;
+		World = false; 
+		X = 10;
+		Y = 10;
+		XVel = 0;
+		YVel = 0;
+		Width = false;
+		Height = false;
+		Friction = 3.5;
+		HP = 100;
+		Speed = 25
+	}
 
 		
 	CharError = love.graphics.newImage( "Images/Error1.png" )
@@ -29,10 +41,14 @@ function PlyLoad( ) -- Load the player up when the game starts
 
 end
 
+function PlyUpdate( )
+	Ply.Width = Ply.AvImg:getWidth( )
+	Ply.Height = Ply.AvImg:getHeight( )
+end
 
 function PlyDraw( )
 
-	if Ply.AvImg == nil then
+	if not Ply.AvImg then
 		Ply.AvImg = CharError
 	end
 	love.graphics.draw( Ply.AvImg, Ply.X, Ply.Y )
@@ -42,30 +58,40 @@ end
 
 function PlyMovement( Rate )
 	local Sprint
+	local MaxSpeed
+	Ply.X = Ply.X + Ply.XVel
+	Ply.Y = Ply.Y + Ply.YVel
+	Ply.XVel = Ply.XVel * ( 1 - math.min( Rate * Ply.Friction, 1 ) )
+	Ply.YVel = Ply.YVel * ( 1 - math.min( Rate * Ply.Friction, 1 ) )
 	
 	if love.keyboard.isDown( "lshift" ) then
-		Sprint = 1
+		Sprint = ( Ply.Speed / 1.5 )
+		MaxSpeed = 4
 	else
 		Sprint = 0
+		MaxSpeed = 2
 	end
 
 	if love.keyboard.isDown( "d" ) then
 		Ply.AvImg = CharRight
-		Ply.X = Ply.X + ( Ply.Speed + Sprint ) * Rate
+		if Ply.XVel < MaxSpeed then Ply.XVel = Ply.XVel + ( Ply.Speed + Sprint ) * Rate end
 	end
 	if love.keyboard.isDown( "a" ) then
 		Ply.AvImg = CharLeft
-		Ply.X = Ply.X - ( Ply.Speed + Sprint ) * Rate
+		if Ply.XVel > -MaxSpeed then Ply.XVel = Ply.XVel - ( Ply.Speed + Sprint ) * Rate end
 	end
+	
+	
 	if love.keyboard.isDown( "s" ) then
 		Ply.AvImg = CharDown
-		Ply.Y = Ply.Y + ( Ply.Speed + Sprint ) * Rate
+		if Ply.YVel < MaxSpeed then Ply.YVel = Ply.YVel + ( Ply.Speed + Sprint ) * Rate end
 	end
 	if love.keyboard.isDown( "w" ) then
 		Ply.AvImg = CharUp
-		Ply.Y = Ply.Y - ( Ply.Speed + Sprint ) * Rate
+		if Ply.YVel > -MaxSpeed then Ply.YVel = Ply.YVel - ( Ply.Speed + Sprint ) * Rate end
 	end
 
 	
 end
+
 
