@@ -1,9 +1,11 @@
 require "player" 
 require "maps"
 require "menu"
+require "entity/player"
 
 function love.load( )
-	PlyLoad( )
+	ply = Player.create()
+	--PlyLoad( )
 	
 	FontMed = love.graphics.newFont( 20 )
 	ImgBG = love.graphics.newImage( "Images/BGI.png" )
@@ -28,9 +30,10 @@ function love.update( dt )
 	MouseY = love.mouse.getY( )
 	
 	if GState == "Playing" then
-		PlyUpdate( )
-		PlyMovement( Rate )
-		BorderCollisions( )
+		--PlyUpdate( )
+		ply:think( dt )
+		-- PlyMovement( Rate )
+		--BorderCollisions( )
 	elseif GState == "MenuStart" then
 		BtnCheck( )
 	end
@@ -41,9 +44,10 @@ end
 function love.draw( )
 	if GState == "Playing" then
 		WorldDraw( )
-		PlyDraw( )
-		love.graphics.print( Ply.XVel, 300, 300 )
-		love.graphics.print( Ply.YVel, 300, 330 )
+		-- PlyDraw( )
+		ply:draw()
+		love.graphics.print( ply.Pos.XVel, 300, 300 )
+		love.graphics.print( ply.Pos.YVel, 300, 330 )
 	elseif GState == "MenuStart" then
 		love.graphics.setColor( 255, 255, 255 )
 		love.graphics.draw( ImgBG, 0, 0 )
