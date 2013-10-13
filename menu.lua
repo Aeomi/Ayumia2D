@@ -1,7 +1,7 @@
 
 
 Btn = { }
-
+Options = { ShowFPS = false }
 
 function BtnCreate( ID, X, Y, Text )
 	local Insertion = { ID = ID, X = X, Y = Y, Text = Text, MouseOver = false }
@@ -10,7 +10,7 @@ function BtnCreate( ID, X, Y, Text )
 end
 
 
-function Btn_Draw( )
+function Btn_Draw(  )
 	for k, v in ipairs( Btn ) do
 		if v.MouseOver then
 			love.graphics.setColor( 75, 75, 200 )
@@ -28,9 +28,10 @@ function BtnDoClick( X, Y )
 		if X > v.X and X < v.X + FontMed:getWidth( v.Text ) and Y > v.Y and Y < v.Y + FontMed:getHeight( v.Text ) then
 			if v.ID == "Quit" then
 				love.event.push( "quit" )
-			end
-			if v.ID == "Start" then
+			elseif v.ID == "Start" then
 				GState = "Playing"
+			elseif v.ID == "Options" then
+				GState = "MenuOptions"
 			end
 		end
 	end
@@ -47,3 +48,15 @@ function BtnCheck( )
 		end
 	end
 end
+
+
+
+
+
+
+
+
+
+
+
+
