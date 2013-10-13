@@ -19,7 +19,6 @@ function love.load( )
 	CurWorldNum = 1
 	WorldLoad( CurWorldNum )
 
-
 	BtnCreate( "Start", ScrWidth/2-100, ScrHeight/2, "Start", false )
 	BtnCreate( "Options", ScrWidth/2-40, ScrHeight/2, "Options", false )
 	BtnCreate( "Quit", ScrWidth/2+50, ScrHeight/2, "Quit", false )
@@ -32,7 +31,6 @@ function love.update( dt )
 	Rate = dt
 	MouseX = love.mouse.getX( )
 	MouseY = love.mouse.getY( )
-
 	if GState == "Playing" then
 		--PlyUpdate( )
 		ply:think( dt )
@@ -58,6 +56,12 @@ function love.draw( )
 		end
 		love.graphics.print( ply.Pos.XVel, 300, 300 )
 		love.graphics.print( ply.Pos.YVel, 300, 330 )
+	elseif GState == "MenuOptions" then
+		love.graphics.setColor( 255, 255, 255 )
+		love.graphics.draw( ImgBG, 0, 0 )
+		if Options.ShowFPS == true then
+			love.graphics.print( tostring( love.timer.getFPS( ) ), 10, 10 )
+		end
 	elseif GState == "MenuStart" then
 		love.graphics.setColor( 255, 255, 255 )
 		love.graphics.draw( ImgBG, 0, 0 )
@@ -73,3 +77,7 @@ function love.mousepressed( x, y )
 		BtnDoClick( x, y )
 	end
 end
+
+
+
+

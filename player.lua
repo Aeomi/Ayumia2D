@@ -5,14 +5,14 @@ function PlyLoad( ) -- Load the player up when the game starts
 	-- Tables & Arrays --
 	Ply = { 
 		AvImg = false;
-		World = false; 
+		World = false;
 		X = 10;
 		Y = 10;
 		XVel = 0;
 		YVel = 0;
 		Width = false;
 		Height = false;
-		Friction = 3.5;
+		Friction = 7;
 		HP = 100;
 		Speed = 25
 	}
@@ -23,7 +23,6 @@ function PlyLoad( ) -- Load the player up when the game starts
 	CharDown = love.graphics.newImage( "Images/Chars/Player/Male/Default/AvImg_Down.png" )
 	CharLeft = love.graphics.newImage( "Images/Chars/Player/Male/Default/AvImg_Left.png" )
 	CharRight = love.graphics.newImage( "Images/Chars/Player/Male/Default/AvImg_Right.png" )
-	
 	
 	
 	-- Set Player to Defaults on startup --
@@ -37,7 +36,6 @@ function PlyLoad( ) -- Load the player up when the game starts
 		Ply.Y = ScrWidth / 2
 	end
 	
-
 
 end
 
