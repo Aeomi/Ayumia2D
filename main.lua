@@ -5,7 +5,7 @@ require "entity"
 require "hook"
 
 function love.load( )
-	hook.new( "OnGameThink", true )
+	hook.new( "OnGameThink" )
 	hook.new( "OnMenuThink" )
 	hook.new( "OnOptionsThink" )
 
@@ -65,7 +65,6 @@ end
 
 function love.draw( )
 	if GState == "Playing" then
-		WorldDraw( )
 		hook.trigger( "OnGameDraw" )
 		-- PlyDraw( )
 		--ply:draw()
