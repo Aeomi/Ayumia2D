@@ -28,9 +28,6 @@ function Player:init( )
 	self.Pos.XVel = 0.0
 	self.Pos.YVel = 0.0
 
-	self.ThinkID = hook.add( "OnGameThink", Player.think, self )
-	self.DrawID = hook.add( "OnGameDraw", Player.draw, self )
-
 	self.AnimateActive = self.Images.AnimateDown
 end
 
@@ -54,10 +51,4 @@ function Player:think( dt )
 	if love.keyboard.isDown( "d" ) then
 		self:AccelerateRight(Running, dt)
 	end
-end
-
-function Player:death( )
-	hook.removeCallback( self.ThinkID )
-	hook.removeCallback( self.DrawID )
-	self.dead = true
 end

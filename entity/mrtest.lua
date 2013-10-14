@@ -27,9 +27,6 @@ function MrTest:init( )
 	self.Pos.XVel = 0.0
 	self.Pos.YVel = 0.0
 
-	self.ThinkID = hook.add( "OnGameThink", MrTest.think, self )
-	self.DrawID = hook.add( "OnGameDraw", MrTest.draw, self )
-
 	self.Images = MrTest.Images
 	self.AnimateActive = self.Images.AnimateDown
 end
@@ -48,10 +45,4 @@ function MrTest:think( dt )
 	else
 		self:AccelerateRight(true, dt)
 	end
-end
-
-function MrTest:death( )
-	hook.removeCallback( self.ThinkID )
-	hook.removeCallback( self.DrawID )
-	self.dead = true
 end

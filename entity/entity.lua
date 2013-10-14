@@ -10,11 +10,20 @@ function Entity:init()
 	self.Pos = { X=nil, Y=nil, XVel=nil, YVel=nil }
 	self.Speed = 0
 	self.Friction = 5
+
+	self.ThinkID = hook.add( "OnGameThink", self.think, self )
+	self.DrawID = hook.add( "OnGameDraw", self.draw, self )
 end
 
 function Entity:draw()
 	assert( self.AnimateActive )
 	love.graphics.draw( self.AnimateActive, self.Pos.X, self.Pos.Y )
+end
+
+function Entity:death()
+	hook.removeCallback( self.ThinkID )
+	hook.removeCallback( self.DrawID )
+	self.dead = true
 end
 
 function Entity.AccelerateGetRate( Delta )
