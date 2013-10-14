@@ -1,17 +1,27 @@
+Menu = {}
+
+function Menu.init( )
+	hook.add( "OnMenuDraw", function( )
+			love.graphics.setColor( 255, 255, 255 )
+			love.graphics.draw( ImgBG, 0, 0 )
+		end)
+	hook.add( "OnMenuDraw", Menu.DrawButtons )
+	hook.add( "OnMenuThink", Menu.CheckButtons )
+end
 
 
-Btn = { }
-Options = { ShowFPS = false }
+Menu.Buttons = { }
+Menu.Options = { ShowFPS = false }
 
-function BtnCreate( ID, X, Y, Text )
+function Menu.CreateButton( ID, X, Y, Text )
 	local Insertion = { ID = ID, X = X, Y = Y, Text = Text, MouseOver = false }
-	table.insert( Btn, Insertion )
+	table.insert( Menu.Buttons, Insertion )
 
 end
 
 
-function Btn_Draw(  )
-	for k, v in ipairs( Btn ) do
+function Menu.DrawButtons(  )
+	for k, v in ipairs( Menu.Buttons ) do
 		if v.MouseOver then
 			love.graphics.setColor( 75, 75, 200 )
 		else
@@ -24,7 +34,7 @@ end
 
 
 function BtnDoClick( X, Y )
-	for k, v in ipairs( Btn ) do
+	for k, v in ipairs( Menu.Buttons ) do
 		if X > v.X and X < v.X + FontMed:getWidth( v.Text ) and Y > v.Y and Y < v.Y + FontMed:getHeight( v.Text ) then
 			if v.ID == "Quit" then
 				love.event.push( "quit" )
@@ -38,9 +48,8 @@ function BtnDoClick( X, Y )
 
 end
 
-
-function BtnCheck( )
-	for k, v in ipairs( Btn ) do
+function Menu.CheckButtons( )
+	for k, v in ipairs( Menu.Buttons ) do
 		if MouseX > v.X and MouseX < v.X + FontMed:getWidth( v.Text ) and MouseY > v.Y and MouseY < v.Y + FontMed:getHeight( v.Text ) then
 			v.MouseOver = true
 		else

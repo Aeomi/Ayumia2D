@@ -1,28 +1,44 @@
-require "player" 
+--require "player"
 require "maps"
 require "menu"
-require "sound"
-require "camera"
+require "entity"
+require "hook"
 
 function love.load( )
-	PlyLoad( )
-	
+	hook.new( "OnGameThink" )
+	hook.new( "OnMenuThink" )
+	hook.new( "OnOptionsThink" )
+
+	hook.new( "OnWorldDraw" )
+	hook.new( "OnGameDraw" )
+	hook.new( "OnMenuDraw")
+	hook.new( "OnOptionsDraw" )
+
+	hook.add( "OnWorldDraw", WorldDraw )
+
+	ply = Player.create()
+	--mrts = { }
+	--MrTest.create()
+	for I=1, 3 do
+		MrTest.create()
+		--mrts[#mrts+1] = MrTest.create()
+	end
+	--PlyLoad( )
+
 	FontMed = love.graphics.newFont( 20 )
 	ImgBG = love.graphics.newImage( "Images/BGI.png" )
 	love.graphics.setBackgroundColor( 255, 255, 255 )
-	
+
 	GState = "MenuStart"
 	CurWorldNum = 1
 	WorldLoad( CurWorldNum )
-	Options.ShowFPS = false
-	-- Sounds --
-	TEsound.playLooping( Sound_BGM1, "bgm", 3, 0.05 )
-	
-	BtnCreate( "Start", ScrWidth/2-100, ScrHeight/2, "Start", false )
-	BtnCreate( "Options", ScrWidth/2-40, ScrHeight/2, "Options", false )
-	BtnCreate( "Quit", ScrWidth/2+50, ScrHeight/2, "Quit", false )
 
-	
+	Menu.CreateButton( "Start", ScrWidth/2-100, ScrHeight/2, "Start", false )
+	Menu.CreateButton( "Options", ScrWidth/2-40, ScrHeight/2, "Options", false )
+	Menu.CreateButton( "Quit", ScrWidth/2+50, ScrHeight/2, "Quit", false )
+
+	Menu.init()
+
 end
 
 
@@ -30,49 +46,52 @@ function love.update( dt )
 	Rate = dt
 	MouseX = love.mouse.getX( )
 	MouseY = love.mouse.getY( )
-	TEsound.cleanup( )
-	
 	if GState == "Playing" then
-		PlyUpdate( )
-		PlyMovement( Rate )
+		hook.trigger( "OnGameThink", dt )
+		--PlyUpdate( )
+		--ply:think( dt )
+		--for I=1, 3 do
+			--mrts[I]:think(dt)
+		--end
+		-- PlyMovement( Rate )
 		--BorderCollisions( )
-		
-		if Ply.X > love.graphics.getWidth( ) / 2 then
-			camera.x = Ply.X - love.graphics.getWidth( ) / 2
-		end
-		if Ply.Y > love.graphics.getHeight( ) / 2 then
-			camera.y = Ply.Y - love.graphics.getHeight( ) / 2
-		end
-		
+	elseif GState == "MenuOptions" then
+		hook.trigger( "OnOptionsThink" )
 	elseif GState == "MenuStart" then
-		BtnCheck( )
+		hook.trigger( "OnMenuThink", dt )
+		--BtnCheck( )
 	end
-
 
 end
 
 
 function love.draw( )
 	if GState == "Playing" then
-		camera:set( )
-		WorldDraw( )
-		PlyDraw( )
-		camera:unset( )
-		
+		hook.trigger( "OnWorldDraw" )
+		hook.trigger( "OnGameDraw" )
+		-- PlyDraw( )
+		--ply:draw()
+		--for I=1, 3 do
+			--mrts[I]:draw()
+		--end
+		love.graphics.print( ply.Pos.XVel, 300, 300 )
+		love.graphics.print( ply.Pos.YVel, 300, 330 )
 	elseif GState == "MenuOptions" then
-		love.graphics.setColor( 255, 255, 255 )
-		love.graphics.draw( ImgBG, 0, 0 )
-		if Options.ShowFPS == true then
-			love.graphics.print( tostring( love.timer.getFPS( ) ), 10, 10 )
-		end
-		
+		hook.trigger( "OnOptionsDraw" )
+		-- TODO: Make a proper options menu ~
+		--love.graphics.setColor( 255, 255, 255 )
+		--love.graphics.draw( ImgBG, 0, 0 )
+		--if Options.ShowFPS == true then
+		--	love.graphics.print( tostring( love.timer.getFPS( ) ), 10, 10 )
+		--end
 	elseif GState == "MenuStart" then
-		love.graphics.setColor( 255, 255, 255 )
+		hook.trigger( "OnMenuDraw" )
+		--[[love.graphics.setColor( 255, 255, 255 )
 		love.graphics.draw( ImgBG, 0, 0 )
-		Btn_Draw( )
+		Btn_Draw( )]]
 	end
-	
-	
+
+
 end
 
 
@@ -84,4 +103,4 @@ end
 
 
 
-   
+

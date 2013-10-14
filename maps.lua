@@ -18,7 +18,7 @@ function WorldDraw( )
 end
 
 
-function BorderCollisions( )
+--[[function BorderCollisions( )
 
 	if Ply.X < 0 then
 		Ply.X = 0
@@ -37,5 +37,5 @@ function BorderCollisions( )
 	end
 
 	
-end
+end]]
 
