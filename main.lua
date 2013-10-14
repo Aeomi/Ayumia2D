@@ -2,12 +2,24 @@
 require "maps"
 require "menu"
 require "entity"
+require "hook"
 
 function love.load( )
+	hook.new( "OnGameThink", true )
+	hook.new( "OnMenuThink" )
+	hook.new( "OnOptionsThink" )
+
+	hook.new( "OnGameDraw" )
+	hook.new( "OnMenuDraw")
+	hook.new( "OnOptionsDraw" )
+
+	hook.add( "OnGameDraw", WorldDraw )
+
 	ply = Player.create()
 	mrts = { }
 	for I=1, 3 do
-		mrts[#mrts+1] = MrTest.create()
+		MrTest.create()
+		--mrts[#mrts+1] = MrTest.create()
 	end
 	--PlyLoad( )
 
@@ -19,10 +31,11 @@ function love.load( )
 	CurWorldNum = 1
 	WorldLoad( CurWorldNum )
 
-	BtnCreate( "Start", ScrWidth/2-100, ScrHeight/2, "Start", false )
-	BtnCreate( "Options", ScrWidth/2-40, ScrHeight/2, "Options", false )
-	BtnCreate( "Quit", ScrWidth/2+50, ScrHeight/2, "Quit", false )
+	Menu.CreateButton( "Start", ScrWidth/2-100, ScrHeight/2, "Start", false )
+	Menu.CreateButton( "Options", ScrWidth/2-40, ScrHeight/2, "Options", false )
+	Menu.CreateButton( "Quit", ScrWidth/2+50, ScrHeight/2, "Quit", false )
 
+	Menu.init()
 
 end
 
@@ -32,15 +45,19 @@ function love.update( dt )
 	MouseX = love.mouse.getX( )
 	MouseY = love.mouse.getY( )
 	if GState == "Playing" then
+		hook.trigger( "OnGameThink", dt )
 		--PlyUpdate( )
-		ply:think( dt )
-		for I=1, 3 do
-			mrts[I]:think(dt)
-		end
+		--ply:think( dt )
+		--for I=1, 3 do
+			--mrts[I]:think(dt)
+		--end
 		-- PlyMovement( Rate )
 		--BorderCollisions( )
+	elseif GState == "MenuOptions" then
+		hook.trigger( "OnOptionsThink" )
 	elseif GState == "MenuStart" then
-		BtnCheck( )
+		hook.trigger( "OnMenuThink", dt )
+		--BtnCheck( )
 	end
 
 end
@@ -49,23 +66,27 @@ end
 function love.draw( )
 	if GState == "Playing" then
 		WorldDraw( )
+		hook.trigger( "OnGameDraw" )
 		-- PlyDraw( )
-		ply:draw()
-		for I=1, 3 do
-			mrts[I]:draw()
-		end
+		--ply:draw()
+		--for I=1, 3 do
+			--mrts[I]:draw()
+		--end
 		love.graphics.print( ply.Pos.XVel, 300, 300 )
 		love.graphics.print( ply.Pos.YVel, 300, 330 )
 	elseif GState == "MenuOptions" then
-		love.graphics.setColor( 255, 255, 255 )
-		love.graphics.draw( ImgBG, 0, 0 )
-		if Options.ShowFPS == true then
-			love.graphics.print( tostring( love.timer.getFPS( ) ), 10, 10 )
-		end
+		hook.trigger( "OnOptionsDraw" )
+		-- TODO: Make a proper options menu ~
+		--love.graphics.setColor( 255, 255, 255 )
+		--love.graphics.draw( ImgBG, 0, 0 )
+		--if Options.ShowFPS == true then
+		--	love.graphics.print( tostring( love.timer.getFPS( ) ), 10, 10 )
+		--end
 	elseif GState == "MenuStart" then
-		love.graphics.setColor( 255, 255, 255 )
+		hook.trigger( "OnMenuDraw" )
+		--[[love.graphics.setColor( 255, 255, 255 )
 		love.graphics.draw( ImgBG, 0, 0 )
-		Btn_Draw( )
+		Btn_Draw( )]]
 	end
 
 
