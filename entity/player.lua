@@ -55,3 +55,9 @@ function Player:think( dt )
 		self:AccelerateRight(Running, dt)
 	end
 end
+
+function Player:death( )
+	hook.removeCallback( self.ThinkID )
+	hook.removeCallback( self.DrawID )
+	self.dead = true
+end

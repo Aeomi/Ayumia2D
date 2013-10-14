@@ -49,3 +49,9 @@ function MrTest:think( dt )
 		self:AccelerateRight(true, dt)
 	end
 end
+
+function MrTest:death( )
+	hook.removeCallback( self.ThinkID )
+	hook.removeCallback( self.DrawID )
+	self.dead = true
+end
