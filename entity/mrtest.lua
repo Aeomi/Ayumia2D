@@ -22,8 +22,8 @@ function MrTest:init( )
 	Entity.init( self )
 
 	self.Speed = 25
-	self.Pos.X = 64.0
-	self.Pos.Y = 64.0
+	self.Pos.X = math.random(1, 800)
+	self.Pos.Y = math.random(1, 800)
 	self.Pos.XVel = 0.0
 	self.Pos.YVel = 0.0
 
@@ -32,11 +32,25 @@ function MrTest:init( )
 end
 
 function MrTest:think( dt )
-	local direct = math.random(4)
-
 	self:AccelerateApply()
 
-	if direct == 1 then
+	local dist = Entity.GetDistance( self, ply )
+	if dist > 100 then
+		local Running = dist > 200
+		if ply.Pos.X < self.Pos.X then
+			self:AccelerateLeft(Running, dt)
+		else
+			self:AccelerateRight(Running, dt)
+		end
+
+		if ply.Pos.Y < self.Pos.Y then
+			self:AccelerateUp(Running, dt)
+		else
+			self:AccelerateDown(Running, dt)
+		end
+	end
+
+	--[[if direct == 1 then
 		self:AccelerateDown(true, dt)
 	elseif direct == 2 then
 		self:AccelerateUp(true, dt)
@@ -44,5 +58,5 @@ function MrTest:think( dt )
 		self:AccelerateLeft(true, dt)
 	else
 		self:AccelerateRight(true, dt)
-	end
+	end]]
 end

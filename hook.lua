@@ -9,8 +9,8 @@ function hook.add( alias, callback, self )
 	if not hook.isHook( alias ) then
 		hook.new( alias )
 	end
+	hook.offset[alias] = hook.offset[alias] + 1
 	local NewID = hook.offset[alias]
-	hook.offset[alias] = NewID + 1
 	hook.hooks[alias][NewID] = { _callback=callback, _self=self }
 	return NewID
 end

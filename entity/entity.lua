@@ -1,6 +1,5 @@
 Entity = {}
 Entity.__index = Entity
-Entity.Pos = { X=nil, Y=nil, XVel=nil, YVel=nil }
 
 function Entity.create()
 	assert( false )
@@ -28,6 +27,12 @@ end
 
 function Entity.AccelerateGetRate( Delta )
 	return Delta * 10
+end
+
+function Entity.GetDistance( Ent1, Ent2 )
+	local xd = Ent2.Pos.X - Ent1.Pos.X
+	local yd = Ent2.Pos.Y - Ent1.Pos.Y
+	return math.sqrt( xd * xd + yd * yd )
 end
 
 -- Annoyingly repetitive, probably should change this~

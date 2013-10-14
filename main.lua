@@ -9,14 +9,16 @@ function love.load( )
 	hook.new( "OnMenuThink" )
 	hook.new( "OnOptionsThink" )
 
+	hook.new( "OnWorldDraw" )
 	hook.new( "OnGameDraw" )
 	hook.new( "OnMenuDraw")
 	hook.new( "OnOptionsDraw" )
 
-	hook.add( "OnGameDraw", WorldDraw )
+	hook.add( "OnWorldDraw", WorldDraw )
 
 	ply = Player.create()
-	mrts = { }
+	--mrts = { }
+	--MrTest.create()
 	for I=1, 3 do
 		MrTest.create()
 		--mrts[#mrts+1] = MrTest.create()
@@ -65,6 +67,7 @@ end
 
 function love.draw( )
 	if GState == "Playing" then
+		hook.trigger( "OnWorldDraw" )
 		hook.trigger( "OnGameDraw" )
 		-- PlyDraw( )
 		--ply:draw()
